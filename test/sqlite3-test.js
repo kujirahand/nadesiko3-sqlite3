@@ -3,7 +3,7 @@ const path = require('path')
 const nadesiko3 = require('nadesiko3')
 const NakoCompiler = nadesiko3.compiler
 const PluginNode = nadesiko3.PluginNode
-const PluginSQLite3 = require('../src/plugin_sqlite3.js')
+const PluginSQLite3 = require('../index')
 
 describe('sqlite3_test', () => {
   const nako = new NakoCompiler()

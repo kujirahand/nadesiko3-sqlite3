@@ -58,3 +58,6 @@ const PluginSQLite3 = {
     }
   }
 }
+
+module.exports = PluginSQLite3
+

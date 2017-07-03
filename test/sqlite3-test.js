@@ -1,11 +1,15 @@
 const assert = require('assert')
 const path = require('path')
-const NakoCompiler = require('nadesiko3')
+const nadesiko3 = require('nadesiko3')
+const NakoCompiler = nadesiko3.compiler
+const PluginNode = nadesiko3.PluginNode
 const PluginSQLite3 = require('../src/plugin_sqlite3.js')
 
 describe('sqlite3_test', () => {
   const nako = new NakoCompiler()
-  nako.addPluginFile('PluginSQLite3', 'plugin_sqlite3.js', PluginSQLite3)
+  nako.addPluginObject('PluginNode', PluginNode)
+  nako.addPluginObject('PluginSQLite3', PluginSQLite3)
+  // console.log(nako.gen.plugins)
   // nako.debug = true
   const cmp = (code, res) => {
     if (nako.debug) {
@@ -20,15 +24,13 @@ describe('sqlite3_test', () => {
   // --- test ---
   it('表示', () => {
     cmp('3を表示', '3')
-    cmp('1+2*3を表示', '7')
-    cmp('A=30;「--{A}--」を表示', '--30--')
   })
   // SQLite3のテスト ---
   const fname = path.join(__dirname, 'test_node_func.sqlite3')
   it('SQLite3 - create', (done) => {
     global.done = done
     const sqlCreate = 'CREATE TABLE IF NOT EXISTS tt (id INTEGER PRIMARY KEY, value INTEGER);'
-    cmd(`「${fname}」をSQLITE3開く。「${sqlCreate}」を[]でSQLITE3実行後には;1と1がASSERT等しい;JS{{{global.done();}}};---;`)
+    cmd(`「${fname}」をSQLITE3開く。\n「${sqlCreate}」を[]でSQLITE3実行後には;1と1がASSERT等しい;JS{{{global.done();}}};---;`)
   })
   it('SQLite3 - delete all', (done) => {
     global.done = done

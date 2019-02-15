@@ -46,12 +46,5 @@ describe('sqlite3_test', () => {
     const sqlSelect = 'SELECT * FROM tt;'
     cmd(`「${fname}」をSQLITE3開く。F=関数(D)\nD[0]['value']と1がASSERT等しい。JS{{{global.done()}}}ここまで;Fに「${sqlSelect}」を[]でSQLITE3取得後`)
   })
-  it('SQLite3 - 同期実行', (done) => {
-    const sql = 'SELECT * FROM tt;'
-    cmp(
-      `「${fname}」をSQLITE3開く。` +
-      `「${sql}」をSQLITE3実行。` +
-      `「1」と表示`, '1')
-  })
   // --- ここまでSQLite3のテスト
 })

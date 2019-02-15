@@ -30,21 +30,28 @@ describe('sqlite3_test', () => {
   it('SQLite3 - create', (done) => {
     global.done = done
     const sqlCreate = 'CREATE TABLE IF NOT EXISTS tt (id INTEGER PRIMARY KEY, value INTEGER);'
-    cmd(`「${fname}」をSQLITE3開く。\n「${sqlCreate}」を[]でSQLITE3実行後には;1と1がASSERT等しい;JS{{{global.done();}}};---;`)
+    cmd(`「${fname}」をSQLITE3開く。\n「${sqlCreate}」を[]でSQLITE3実行後には;1と1がASSERT等しい;JS{{{global.done();}}};ここまで;`)
   })
   it('SQLite3 - delete all', (done) => {
     global.done = done
-    cmd(`「${fname}」をSQLITE3開く。「DELETE FROM tt」を[]でSQLITE3実行後には;1と1がASSERT等しい;JS{{{global.done();}}};---;`)
+    cmd(`「${fname}」をSQLITE3開く。「DELETE FROM tt」を[]でSQLITE3実行後には;1と1がASSERT等しい;JS{{{global.done();}}};ここまで;`)
   })
   it('SQLite3 - insert', (done) => {
     global.done = done
     const sqlIns = 'INSERT INTO tt (value) VALUES (?);'
-    cmd(`「${fname}」をSQLITE3開く。「${sqlIns}」を[1]でSQLITE3実行後には;1と1がASSERT等しい;JS{{{global.done();}}};---;`)
+    cmd(`「${fname}」をSQLITE3開く。「${sqlIns}」を[1]でSQLITE3実行後には;1と1がASSERT等しい;JS{{{global.done();}}};ここまで;`)
   })
   it('SQLite3 - SQLITE3取得後', (done) => {
     global.done = done
     const sqlSelect = 'SELECT * FROM tt;'
-    cmd(`「${fname}」をSQLITE3開く。F=関数(D)→D[0]['value']と1がASSERT等しい。JS{{{global.done()}}}←;Fに「${sqlSelect}」を[]でSQLITE3取得後`)
+    cmd(`「${fname}」をSQLITE3開く。F=関数(D)\nD[0]['value']と1がASSERT等しい。JS{{{global.done()}}}ここまで;Fに「${sqlSelect}」を[]でSQLITE3取得後`)
+  })
+  it('SQLite3 - 同期実行', (done) => {
+    const sql = 'SELECT * FROM tt;'
+    cmp(
+      `「${fname}」をSQLITE3開く。` +
+      `「${sql}」をSQLITE3実行。` +
+      `「1」と表示`, '1')
   })
   // --- ここまでSQLite3のテスト
 })

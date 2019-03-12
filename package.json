@@ -1,6 +1,6 @@
 {
   "name": "nadesiko3-sqlite3",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "SQLite3 Plug-in for Nadesiko3",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,6 @@
   },
   "devDependencies": {
     "mocha": "^3.4.2",
-    "nadesiko3": "^3.0.53"
+    "nadesiko3": "^3.0.55"
   }
 }

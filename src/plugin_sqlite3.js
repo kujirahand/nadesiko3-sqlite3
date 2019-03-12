@@ -1,5 +1,6 @@
 // plugin_sqlite3.js
 const sqlite3 = require('sqlite3')
+const ERR_OPEN_DB = 'SQLITE3の命令を使う前に『SQLITE3開く』でデータベースを開いてください。';
 const PluginSQLite3 = {
   '初期化': {
     type: 'func',
@@ -37,7 +38,7 @@ const PluginSQLite3 = {
     type: 'func',
     josi: [['に'], ['を'], ['で']],
     fn: function (f, sql, params, sys) {
-      if (!sys.__sqlite3db) throw new Error('SQLITE3実行時の前に『SQLITE3開く』でデータベースを開いてください')
+      if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
       const db = sys.__sqlite3db
       db.run(sql, params, (err) => {
         if (err) throw new Error('SQLITE3実行後のエラー『' + sql + '』' + err.message)
@@ -49,13 +50,69 @@ const PluginSQLite3 = {
     type: 'func',
     josi: [['に'], ['を'], ['で']],
     fn: function (f, sql, params, sys) {
-      if (!sys.__sqlite3db) throw new Error('SQLITE3実行時の前に『SQLITE3開く』でデータベースを開いてください')
+      if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
       const db = sys.__sqlite3db
       db.all(sql, params, (err, rows) => {
         if (err) throw err
         f(rows)
       })
     }
+  },
+  'SQLITE3実行': { // @逐次実行構文にて、SQLとパラメータPARAMSでSQLを実行し、変数『対象』に結果を得る。 // SQLITE3じっこう
+    type: 'func',
+    josi: [['を'], ['で']],
+    fn: function (sql, params, sys) {
+      if (!sys.resolve) throw new Error('『SQLITE3実行』は『逐次実行』構文で使ってください。')
+      sys.resolveCount++
+      const resolve = sys.resolve
+      if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
+      sys.__sqlite3db.run(sql, params, function (err, res) {
+        if (err) {
+          throw new Error('SQLITE3実行のエラー『' + sql + '』' + err.message)
+        }
+        sys.__v0['対象'] = res
+        resolve()
+      })
+    },
+    return_none: true
+  },
+  'SQLITE3全取得': { // @逐次実行構文内で、SQLとパラメータPARAMSでSQLを実行して結果を得る。 // SQLITE3をぜんしゅとく
+    type: 'func',
+    josi: [['を'], ['で']],
+    fn: function (sql, params, sys) {
+      if (!sys.resolve) throw new Error('『SQLITE3全取得』は『逐次実行』構文で使ってください。')
+      sys.resolveCount++
+      const resolve = sys.resolve
+      if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
+      const db = sys.__sqlite3db
+      db.all(sql, params, function (err, res) {
+        if (err) {
+          throw new Error('SQLITE3全取得のエラー『' + sql + '』' + err.message)
+        }
+        sys.__v0['対象'] = res
+        resolve(res)
+      })
+    },
+    return_none: true
+  },
+  'SQLITE3取得': { // @逐次実行構文内で、SQLとパラメータPARAMSでSQLを実行して結果を得る。 // SQLITE3をしゅとく
+    type: 'func',
+    josi: [['を'], ['で']],
+    fn: function (sql, params, sys) {
+      if (!sys.resolve) throw new Error('『SQLITE3取得』は『逐次実行』構文で使ってください。')
+      sys.resolveCount++
+      const resolve = sys.resolve
+      if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
+      const db = sys.__sqlite3db
+      db.get(sql, params, function (err, res) {
+        if (err) {
+          throw new Error('SQLITE3取得のエラー『' + sql + '』' + err.message)
+        }
+        sys.__v0['対象'] = res
+        resolve(res)
+      })
+    },
+    return_none: true
   }
 }
 

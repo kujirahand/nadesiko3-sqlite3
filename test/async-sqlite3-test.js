@@ -75,4 +75,17 @@ describe('sqlite3async-test(同期的実行)', () => {
       'ここまで\n'
     )
   })
+  it('ID取得', (done) => {
+    global.done = done
+    cmd(
+      `『${fname}』をSQLITE3開く。\n` +
+      '逐次実行\n' +
+      '　先に、「CREATE TABLE IF NOT EXISTS ta(id INTEGER PRIMARY KEY, value INTEGER);」を[]でSQLITE3逐次実行\n' +
+      '　次に、「DELETE FROM ta」を[]でSQLITE3逐次実行\n' +
+      '　次に、「INSERT INTO ta (value) VALUES(?)」を[100]でSQLITE3逐次実行\n' +
+      '　次に、SQLITE3今挿入IDと1でテスト。\n' +
+      '　次に、JS{{{ global.done() }}}\n' +
+      'ここまで\n'
+    )
+  })
 })

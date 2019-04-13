@@ -6,9 +6,11 @@ const PluginSQLite3 = {
     type: 'func',
     josi: [],
     fn: function (sys) {
+      sys.__sqlite3db = null
     }
   },
   // @SQLite3
+  'SQLITE3今挿入ID': {type: 'const', value: '?'}, // @SQLITE3いまそうにゅうID
   'SQLITE3開': { // @SQlite3のデータベースを開いて、データベースオブジェクトを返す // @SQLITE3ひらく
     type: 'func',
     josi: [['を', 'の']],
@@ -42,6 +44,7 @@ const PluginSQLite3 = {
       const db = sys.__sqlite3db
       db.run(sql, params, (err) => {
         if (err) throw new Error('SQLITE3実行後のエラー『' + sql + '』' + err.message)
+        sys.__v0['SQLITE3今挿入ID'] = this.lastID
         f()
       })
     }
@@ -54,6 +57,7 @@ const PluginSQLite3 = {
       const db = sys.__sqlite3db
       db.all(sql, params, (err, rows) => {
         if (err) throw err
+        sys.__v0['SQLITE3今挿入ID'] = this.lastID
         f(rows)
       })
     }
@@ -71,6 +75,7 @@ const PluginSQLite3 = {
           throw new Error('SQLITE3実行のエラー『' + sql + '』' + err.message)
         }
         sys.__v0['対象'] = res
+        sys.__v0['SQLITE3今挿入ID'] = this.lastID
         resolve()
       })
     },
@@ -90,6 +95,7 @@ const PluginSQLite3 = {
           throw new Error('SQLITE3全取得のエラー『' + sql + '』' + err.message)
         }
         sys.__v0['対象'] = res
+        sys.__v0['SQLITE3今挿入ID'] = this.lastID
         resolve(res)
       })
     },

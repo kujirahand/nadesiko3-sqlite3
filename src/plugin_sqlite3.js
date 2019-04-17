@@ -62,7 +62,7 @@ const PluginSQLite3 = {
       })
     }
   },
-  'SQLITE3逐次実行': { // @逐次実行構文にて、SQLとパラメータPARAMSでSQLを実行し、変数『対象』に結果を得る。 // SQLITE3ちくじじっこう
+  'SQLITE3逐次実行': { // @逐次実行構文にて、SQLとパラメータPARAMSでSQLを実行し、変数『対象』に結果を得る。 // @SQLITE3ちくじじっこう
     type: 'func',
     josi: [['を'], ['で']],
     fn: function (sql, params, sys) {
@@ -81,7 +81,7 @@ const PluginSQLite3 = {
     },
     return_none: true
   },
-  'SQLITE3逐次全取得': { // @逐次実行構文内で、SQLとパラメータPARAMSでSQLを実行して結果を得る。 // SQLITE3ちくじぜんしゅとく
+  'SQLITE3逐次全取得': { // @逐次実行構文内で、SQLとパラメータPARAMSでSQLを実行して結果を得る。 // @SQLITE3ちくじぜんしゅとく
     type: 'func',
     josi: [['を'], ['で']],
     fn: function (sql, params, sys) {
@@ -101,7 +101,7 @@ const PluginSQLite3 = {
     },
     return_none: true
   },
-  'SQLITE3逐次取得': { // @逐次実行構文内で、SQLとパラメータPARAMSでSQLを実行して結果を得る。 // SQLITE3ちくじしゅとく
+  'SQLITE3逐次取得': { // @逐次実行構文内で、SQLとパラメータPARAMSでSQLを実行して結果を得る。 // @SQLITE3ちくじしゅとく
     type: 'func',
     josi: [['を'], ['で']],
     fn: function (sql, params, sys) {
@@ -123,3 +123,4 @@ const PluginSQLite3 = {
 }
 
 module.exports = PluginSQLite3
+

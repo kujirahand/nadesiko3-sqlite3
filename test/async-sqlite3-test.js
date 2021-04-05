@@ -1,23 +1,29 @@
+/**
+ * テストの際はリポジトリを次のように配置してください
+ * /repos
+ *   |- nadesiko3
+ *   |- nadesiko3-sqlite3
+ */
+
 const assert = require('assert')
 const path = require('path')
-const nadesiko3 = require('nadesiko3')
+const nadesiko3 = require('../../nadesiko3')
 const NakoCompiler = nadesiko3.compiler
 const PluginNode = nadesiko3.PluginNode
-const PluginSQLite3 = require('../index')
-
-const assert_func = (a, b) => { assert.equal(a, b) }
+const PluginSQLite3 = require('../src/nadesiko3-sqlite3')
 
 describe('sqlite3async-test(同期的実行)', () => {
   const nako = new NakoCompiler()
   nako.addPluginObject('PluginNode', PluginNode)
   nako.addPluginObject('PluginSQLite3', PluginSQLite3)
-  nako.setFunc('テスト', [['と'], ['で']], assert_func)
+  nako.setFunc('テスト', [['と'], ['で']], (a, b) => { assert.strictEqual(a, b) })
   nako.setFunc('表示', [['と', 'を']], (s) => { console.log('@', s) })
+  nako.setFunc('DONE', [], () => { global.done() })
   const cmp = (code, res) => {
     if (nako.debug) {
       console.log('code=' + code)
     }
-    assert.equal(nako.runReset(code).log, res)
+    assert.strictEqual(nako.runReset(code).log, res)
   }
   const cmd = (code) => {
     if (nako.debug) console.log('code=' + code)
@@ -41,7 +47,7 @@ describe('sqlite3async-test(同期的実行)', () => {
       '　次に、「INSERT INTO ta (value) VALUES(20)」を[]でSQLITE3逐次実行\n' +
       '　次に、「SELECT sum(value) FROM ta」を[]でSQLITE3逐次全取得\n' +
       '　次に、対象[0]["sum(value)"]と30でテスト。\n' +
-      '　次に、JS{{{ global.done() }}}\n' +
+      '　次に、DONE\n' +
       'ここまで\n'
     )
   })
@@ -56,7 +62,7 @@ describe('sqlite3async-test(同期的実行)', () => {
       '　次に、「INSERT INTO ta (value) VALUES(20)」を[]でSQLITE3逐次実行\n' +
       '　次に、「SELECT sum(value) FROM ta」を[]でSQLITE3逐次取得\n' +
       '　次に、対象["sum(value)"]と30でテスト。\n' +
-      '　次に、JS{{{ global.done() }}}\n' +
+      '　次に、DONE\n' +
       'ここまで\n'
     )
   })
@@ -71,7 +77,7 @@ describe('sqlite3async-test(同期的実行)', () => {
       '　次に、「INSERT INTO ta (value) VALUES(?)」を[200]でSQLITE3逐次実行\n' +
       '　次に、「SELECT max(value) FROM ta」を[]でSQLITE3逐次取得\n' +
       '　次に、対象["max(value)"]と200でテスト。\n' +
-      '　次に、JS{{{ global.done() }}}\n' +
+      '　次に、DONE\n' +
       'ここまで\n'
     )
   })
@@ -84,7 +90,7 @@ describe('sqlite3async-test(同期的実行)', () => {
       '　次に、「DELETE FROM ta」を[]でSQLITE3逐次実行\n' +
       '　次に、「INSERT INTO ta (value) VALUES(?)」を[100]でSQLITE3逐次実行\n' +
       '　次に、SQLITE3今挿入IDと1でテスト。\n' +
-      '　次に、JS{{{ global.done() }}}\n' +
+      '　次に、DONE\n' +
       'ここまで\n'
     )
   })

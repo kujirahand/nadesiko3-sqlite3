@@ -36,20 +36,20 @@ const PluginSQLite3 = {
     },
     return_none: true
   },
-  'SQLITE3実行後': { // @ SQLをパラメータPARAMSで実行する。完了するとコールバック関数Fを実行する。 // @SQLITE3じっこうしたあと
+  'SQLITE3実行時': { // @ SQLをパラメータPARAMSで実行する。完了するとコールバック関数Fを実行する。 // @SQLITE3じっこうしたとき
     type: 'func',
     josi: [['に'], ['を'], ['で']],
     fn: function (f, sql, params, sys) {
       if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
       const db = sys.__sqlite3db
       db.run(sql, params, (err) => {
-        if (err) throw new Error('SQLITE3実行後のエラー『' + sql + '』' + err.message)
+        if (err) throw new Error('SQLITE3実行時のエラー『' + sql + '』' + err.message)
         sys.__v0['SQLITE3今挿入ID'] = this.lastID
         f()
       })
     }
   },
-  'SQLITE3取得後': { // @ SQLをパラメータPARAMSで取得実行する。完了するとコールバック関数Fが実行され、結果は第一引数に与えられる。 // @SQLITE3じっこうしゅとくしたあと
+  'SQLITE3取得時': { // @ SQLをパラメータPARAMSで取得実行する。完了するとコールバック関数Fが実行され、結果は第一引数に与えられる。 // @SQLITE3じっこうしゅとくしたとき
     type: 'func',
     josi: [['に'], ['を'], ['で']],
     fn: function (f, sql, params, sys) {
@@ -69,10 +69,12 @@ const PluginSQLite3 = {
       if (!sys.resolve) throw new Error('『SQLITE3実行』は『逐次実行』構文で使ってください。')
       sys.resolveCount++
       const resolve = sys.resolve
+      const reject = sys.reject
       if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
       sys.__sqlite3db.run(sql, params, function (err, res) {
         if (err) {
-          throw new Error('SQLITE3実行のエラー『' + sql + '』' + err.message)
+          reject('SQLITE3逐次実行のエラー『' + sql + '』' + err.message)
+          return
         }
         sys.__v0['対象'] = res
         sys.__v0['SQLITE3今挿入ID'] = this.lastID
@@ -88,11 +90,13 @@ const PluginSQLite3 = {
       if (!sys.resolve) throw new Error('『SQLITE3全取得』は『逐次実行』構文で使ってください。')
       sys.resolveCount++
       const resolve = sys.resolve
+      const reject = sys.reject
       if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
       const db = sys.__sqlite3db
       db.all(sql, params, function (err, res) {
         if (err) {
-          throw new Error('SQLITE3全取得のエラー『' + sql + '』' + err.message)
+          reject('SQLITE3全取得のエラー『' + sql + '』' + err.message)
+          return
         }
         sys.__v0['対象'] = res
         sys.__v0['SQLITE3今挿入ID'] = this.lastID
@@ -108,11 +112,13 @@ const PluginSQLite3 = {
       if (!sys.resolve) throw new Error('『SQLITE3取得』は『逐次実行』構文で使ってください。')
       sys.resolveCount++
       const resolve = sys.resolve
+      const reject = sys.reject
       if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
       const db = sys.__sqlite3db
       db.get(sql, params, function (err, res) {
         if (err) {
-          throw new Error('SQLITE3取得のエラー『' + sql + '』' + err.message)
+          reject('SQLITE3取得のエラー『' + sql + '』' + err.message)
+          return
         }
         sys.__v0['対象'] = res
         resolve(res)

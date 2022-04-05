@@ -54,5 +54,31 @@ describe('sqlite3_test', () => {
     const sqlSelect = 'SELECT * FROM tt;'
     cmd(`「${fname}」をSQLITE3開く。F=関数(D)\nD[0]['value']と1がASSERT等しい。DONE;ここまで;Fに「${sqlSelect}」を[]でSQLITE3取得時`)
   })
+  // asyncFn のテスト
+  it('SQLite3 - create - SQLITE3実行', (done) => {
+    global.done = done
+    const sql = 'CREATE TABLE IF NOT EXISTS tt (id INTEGER PRIMARY KEY, value INTEGER);'
+    cmd(`「${fname}」をSQLITE3開く。\n「${sql}」を[]でSQLITE3実行;DONE;`)
+  })
+  it('SQLite3 - delete - SQLITE3実行', (done) => {
+    global.done = done
+    const sql = 'DELETE from tt;'
+    cmd(`「${fname}」をSQLITE3開く。\n「${sql}」を[]でSQLITE3実行;DONE;`)
+  })
+  it('SQLite3 - insert - SQLITE3実行', (done) => {
+    global.done = done
+    const sql = 'INSERT INTO tt (id,value)VALUES(?,?);'
+    cmd(`「${fname}」をSQLITE3開く。\n5回,「${sql}」を[回数,回数]でSQLITE3実行;DONE;`)
+  })
+  it('SQLite3 - select - SQLITE3取得', (done) => {
+    global.done = done
+    const sql = 'SELECT value FROM tt WHERE id=?;'
+    cmd(`「${fname}」をSQLITE3開く。\n「${sql}」を[1]でSQLITE3取得;それ['value']と1がASSERT等しい。DONE;`)
+  })
+  it('SQLite3 - select - SQLITE3全取得', (done) => {
+    global.done = done
+    const sql = 'SELECT value FROM tt WHERE id=?;'
+    cmd(`「${fname}」をSQLITE3開く。\n「${sql}」を[1]でSQLITE3全取得;それ[0]['value']と1がASSERT等しい。DONE;`)
+  })
   // --- ここまでSQLite3のテスト
 })

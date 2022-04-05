@@ -49,7 +49,7 @@ const PluginSQLite3 = {
       })
     }
   },
-  'SQLITE3取得時': { // @ SQLをパラメータPARAMSで取得実行する。完了するとコールバック関数Fが実行され、結果は第一引数に与えられる。 // @SQLITE3じっこうしゅとくしたとき
+  'SQLITE3取得時': { // @ SQLをパラメータPARAMSで取得実行する。完了するとコールバック関数Fが実行され、結果は第一引数に与えられる。 // @SQLITE3しゅとくしたとき
     type: 'func',
     josi: [['に'], ['を'], ['で']],
     fn: function (f, sql, params, sys) {
@@ -62,7 +62,74 @@ const PluginSQLite3 = {
       })
     }
   },
-  'SQLITE3逐次実行': { // @逐次実行構文にて、SQLとパラメータPARAMSでSQLを実行し、変数『対象』に結果を得る。 // @SQLITE3ちくじじっこう
+  'SQLITE3実行': { // @ SQLをパラメータPARAMSで実行する。 // @SQLITE3じっこう
+    type: 'func',
+    josi: [['を'], ['で']],
+    asyncFn: true,
+    fn: function (sql, params, sys) {
+      return new Promise((resolve, reject) => {
+        if (!sys.__sqlite3db) {
+          reject(ERR_OPEN_DB)
+          return
+        }
+        const db = sys.__sqlite3db
+        db.run(sql, params, (err) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          sys.__v0['SQLITE3今挿入ID'] = this.lastID
+          resolve()
+        })
+      })
+    },
+    return_none: true
+  },
+  'SQLITE3取得': { // @ SQLをパラメータPARAMSで取得する。 // @SQLITE3しゅとく
+    type: 'func',
+    josi: [['を'], ['で']],
+    asyncFn: true,
+    fn: function (sql, params, sys) {
+      return new Promise((resolve, reject) => {
+        if (!sys.__sqlite3db) {
+          reject(ERR_OPEN_DB)
+          return
+        }
+        const db = sys.__sqlite3db
+        db.get(sql, params, (err, row) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          resolve(row)
+        })
+      })
+    },
+    return_none: false
+  },
+  'SQLITE3全取得': { // @ SQLをパラメータPARAMSで全部取得する。 // @SQLITE3ぜんしゅとく
+    type: 'func',
+    josi: [['を'], ['で']],
+    asyncFn: true,
+    fn: function (sql, params, sys) {
+      return new Promise((resolve, reject) => {
+        if (!sys.__sqlite3db) {
+          reject(ERR_OPEN_DB)
+          return
+        }
+        const db = sys.__sqlite3db
+        db.all(sql, params, (err, rows) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          resolve(rows)
+        })
+      })
+    },
+    return_none: false
+  },
+  'SQLITE3逐次実行': { // @(非推奨) 逐次実行構文にて、SQLとパラメータPARAMSでSQLを実行し、変数『対象』に結果を得る。 // @SQLITE3ちくじじっこう
     type: 'func',
     josi: [['を'], ['で']],
     fn: function (sql, params, sys) {
@@ -83,7 +150,7 @@ const PluginSQLite3 = {
     },
     return_none: true
   },
-  'SQLITE3逐次全取得': { // @逐次実行構文内で、SQLとパラメータPARAMSでSQLを実行して結果を得る。 // @SQLITE3ちくじぜんしゅとく
+  'SQLITE3逐次全取得': { // @(非推奨)逐次実行構文内で、SQLとパラメータPARAMSでSQLを実行して結果を得る。 // @SQLITE3ちくじぜんしゅとく
     type: 'func',
     josi: [['を'], ['で']],
     fn: function (sql, params, sys) {
@@ -105,7 +172,7 @@ const PluginSQLite3 = {
     },
     return_none: true
   },
-  'SQLITE3逐次取得': { // @逐次実行構文内で、SQLとパラメータPARAMSでSQLを実行して結果を得る。 // @SQLITE3ちくじしゅとく
+  'SQLITE3逐次取得': { // @(非推奨)逐次実行構文内で、SQLとパラメータPARAMSでSQLを実行して結果を得る。 // @SQLITE3ちくじしゅとく
     type: 'func',
     josi: [['を'], ['で']],
     fn: function (sql, params, sys) {

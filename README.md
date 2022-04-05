@@ -1,2 +1,4 @@
-# nadesiko3-sqlite3
-SQLite3 Plug-in for Nadesiko3
+# sqlite3 for nadesiko3
+
+日本語プログラミング言語「なでしこ3」用 SQLite3 モジュールです。
+

@@ -1,8 +1,8 @@
 {
   "name": "nadesiko3-sqlite3",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "SQLite3 Plug-in for Nadesiko3",
-  "main": "src/nadesiko3-sqlite3.js",
+  "main": "nadesiko3-sqlite3.js",
   "scripts": {
     "test": "mocha"
   },

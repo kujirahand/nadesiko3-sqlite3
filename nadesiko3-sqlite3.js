@@ -42,7 +42,7 @@ const PluginSQLite3 = {
     fn: function (f, sql, params, sys) {
       if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
       const db = sys.__sqlite3db
-      db.run(sql, params, (err) => {
+      db.run(sql, params, function (err) {
         if (err) throw new Error('SQLITE3実行時のエラー『' + sql + '』' + err.message)
         sys.__v0['SQLITE3今挿入ID'] = this.lastID
         f()
@@ -57,7 +57,6 @@ const PluginSQLite3 = {
       const db = sys.__sqlite3db
       db.all(sql, params, (err, rows) => {
         if (err) throw err
-        sys.__v0['SQLITE3今挿入ID'] = this.lastID
         f(rows)
       })
     }
@@ -73,12 +72,16 @@ const PluginSQLite3 = {
           return
         }
         const db = sys.__sqlite3db
-        db.run(sql, params, (err) => {
+        db.run(sql, params, function (err) {
           if (err) {
+            console.log('[ERROR]', err)
             reject(err)
             return
           }
-          sys.__v0['SQLITE3今挿入ID'] = this.lastID
+          if (this.lastID) {
+            sys.__v0['SQLITE3今挿入ID'] = this.lastID
+          }
+          // console.log(sql, params, err)
           resolve()
         })
       })

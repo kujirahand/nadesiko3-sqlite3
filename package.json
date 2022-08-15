@@ -1,6 +1,6 @@
 {
   "name": "nadesiko3-sqlite3",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "SQLite3 Plug-in for Nadesiko3",
   "main": "nadesiko3-sqlite3.js",
   "scripts": {

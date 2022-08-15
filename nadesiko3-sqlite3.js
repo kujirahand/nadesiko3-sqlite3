@@ -1,5 +1,5 @@
 // plugin_sqlite3.js
-const sqlite3 = require('sqlite3')
+import sqlite3 from 'sqlite3'
 const ERR_OPEN_DB = 'SQLITE3の命令を使う前に『SQLITE3開く』でデータベースを開いてください。';
 const PluginSQLite3 = {
   '初期化': {
@@ -74,7 +74,7 @@ const PluginSQLite3 = {
         const db = sys.__sqlite3db
         db.run(sql, params, function (err) {
           if (err) {
-            console.log('[ERROR]', err)
+            console.log('[ERROR]', sql, err)
             reject(err)
             return
           }
@@ -199,5 +199,7 @@ const PluginSQLite3 = {
   }
 }
 
-module.exports = PluginSQLite3
+export default PluginSQLite3
+
+// module.exports = PluginSQLite3
 

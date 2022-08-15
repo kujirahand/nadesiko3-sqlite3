@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kujirahand/nadesiko3-sqlite3.git"

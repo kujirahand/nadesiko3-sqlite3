@@ -132,6 +132,7 @@ const PluginSQLite3 = {
     },
     return_none: false
   },
+  // @非推奨
   'SQLITE3逐次実行': { // @(非推奨) 逐次実行構文にて、SQLとパラメータPARAMSでSQLを実行し、変数『対象』に結果を得る。 // @SQLITE3ちくじじっこう
     type: 'func',
     josi: [['を'], ['で']],

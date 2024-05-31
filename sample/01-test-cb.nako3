@@ -3,6 +3,6 @@ sqlCreate = 『
 CREATE TABLE IF NOT EXISTS tt 
   (id INTEGER PRIMARY KEY, value INTEGER);』
 「test.sqlite3」をSQLITE3開く。
-sqlCreateを[]でSQLITE3実行後には
+sqlCreateを[]でSQLITE3実行時には
 　　「実行しました」と表示。
 ここまで。

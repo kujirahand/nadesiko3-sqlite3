@@ -2,14 +2,14 @@
 「test.sqlite3」をSQLITE3開く。
 
 SQL=「CREATE TABLE IF NOT EXISTS tt (id INTEGER PRIMARY KEY, value INTEGER)」
-SQLを[]でSQLITE3実行後には
+SQLを[]でSQLITE3実行時には
 　　SQL=「INSERT INTO tt (value) VALUES (?)」
-　　SQLを[30]でSQLITE3実行後には
+　　SQLを[30]でSQLITE3実行時には
 　　　　「30を挿入」と表示。
-　　　　SQLを[50]でSQLITE3実行後には
+　　　　SQLを[50]でSQLITE3実行時には
 　　　　　　「50を挿入」と表示。
 　　　　　　SQL=「SELECT * FROM tt;」
-　　　　　　SQLを[]でSQLITE3取得後には(ROWS)
+　　　　　　SQLを[]でSQLITE3取得時には(ROWS)
 　　　　　　　　「抽出」と表示。
 　　　　　　　　ROWSを表示。
 　　　　　　ここまで。

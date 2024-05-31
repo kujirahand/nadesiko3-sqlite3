@@ -59,6 +59,13 @@ const PluginSQLite3 = {
       })
     }
   },
+  'SQLITE3実行後': { // @ 『SQLITE3実行時』と同じ。 // @SQLITE3じっこうしたあと
+    type: 'func',
+    josi: [['に'], ['を'], ['で']],
+    fn: function (f, sql, params, sys) {
+      sys.__exec('SQLITE3実行時', [f, sql, params, sys])
+    }
+  },
   'SQLITE3取得時': { // @ SQLをパラメータPARAMSで取得実行する。完了するとコールバック関数Fが実行され、結果は第一引数に与えられる。 // @SQLITE3しゅとくしたとき
     type: 'func',
     josi: [['に'], ['を'], ['で']],
@@ -141,71 +148,6 @@ const PluginSQLite3 = {
       })
     },
     return_none: false
-  },
-  // @非推奨
-  'SQLITE3逐次実行': { // @(非推奨) 逐次実行構文にて、SQLとパラメータPARAMSでSQLを実行し、変数『対象』に結果を得る。 // @SQLITE3ちくじじっこう
-    type: 'func',
-    josi: [['を'], ['で']],
-    fn: function (sql, params, sys) {
-      if (!sys.resolve) throw new Error('『SQLITE3実行』は『逐次実行』構文で使ってください。')
-      sys.resolveCount++
-      const resolve = sys.resolve
-      const reject = sys.reject
-      if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
-      sys.__sqlite3db.run(sql, params, function (err, res) {
-        if (err) {
-          reject('SQLITE3逐次実行のエラー『' + sql + '』' + err.message)
-          return
-        }
-        sys.__v0['対象'] = res
-        sys.__v0['SQLITE3今挿入ID'] = this.lastID
-        resolve()
-      })
-    },
-    return_none: true
-  },
-  'SQLITE3逐次全取得': { // @(非推奨)逐次実行構文内で、SQLとパラメータPARAMSでSQLを実行して結果を得る。 // @SQLITE3ちくじぜんしゅとく
-    type: 'func',
-    josi: [['を'], ['で']],
-    fn: function (sql, params, sys) {
-      if (!sys.resolve) throw new Error('『SQLITE3全取得』は『逐次実行』構文で使ってください。')
-      sys.resolveCount++
-      const resolve = sys.resolve
-      const reject = sys.reject
-      if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
-      const db = sys.__sqlite3db
-      db.all(sql, params, function (err, res) {
-        if (err) {
-          reject('SQLITE3全取得のエラー『' + sql + '』' + err.message)
-          return
-        }
-        sys.__v0['対象'] = res
-        sys.__v0['SQLITE3今挿入ID'] = this.lastID
-        resolve(res)
-      })
-    },
-    return_none: true
-  },
-  'SQLITE3逐次取得': { // @(非推奨)逐次実行構文内で、SQLとパラメータPARAMSでSQLを実行して結果を得る。 // @SQLITE3ちくじしゅとく
-    type: 'func',
-    josi: [['を'], ['で']],
-    fn: function (sql, params, sys) {
-      if (!sys.resolve) throw new Error('『SQLITE3取得』は『逐次実行』構文で使ってください。')
-      sys.resolveCount++
-      const resolve = sys.resolve
-      const reject = sys.reject
-      if (!sys.__sqlite3db) throw new Error(ERR_OPEN_DB)
-      const db = sys.__sqlite3db
-      db.get(sql, params, function (err, res) {
-        if (err) {
-          reject('SQLITE3取得のエラー『' + sql + '』' + err.message)
-          return
-        }
-        sys.__v0['対象'] = res
-        resolve(res)
-      })
-    },
-    return_none: true
   }
 }
 

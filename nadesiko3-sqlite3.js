@@ -2,6 +2,16 @@
 import sqlite3 from 'sqlite3'
 const ERR_OPEN_DB = 'SQLITE3の命令を使う前に『SQLITE3開く』でデータベースを開いてください。';
 const PluginSQLite3 = {
+  'meta': {
+    type: 'const',
+    value: {
+      pluginName: 'nadesiko3-sqlite3', // プラグインの名前
+      description: 'Node.js向けSQLiteプラグイン', // プラグインの説明
+      pluginVersion: '3.6.6', // プラグインのバージョン
+      nakoRuntime: ['cnako'], // 対象ランタイム
+      nakoVersion: '3.6.0' // 要求なでしこバージョン
+    }
+  },
   '初期化': {
     type: 'func',
     josi: [],

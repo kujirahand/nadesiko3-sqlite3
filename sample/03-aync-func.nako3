@@ -13,7 +13,8 @@ name INTEGER);』を[]でSQLITE3実行。
 
 ●(Vを)USERデータ挿入処理とは
 　　「--1:{V}--」を表示。
-　　1秒待つ。
+　　0.3秒待つ。
 　　「--2:{V}--」を表示。
 　　『INSERT INTO items (id,name) VALUES(?,?)』を[V,V]でSQLITE3実行。
+　　「  [挿入] ID={SQLITE3今挿入ID},V={V}」を表示
 ここまで。

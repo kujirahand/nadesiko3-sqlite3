@@ -11,7 +11,7 @@ SQLを[]でSQLITE3実行時には
 　　　　　　SQL=「SELECT * FROM tt;」
 　　　　　　SQLを[]でSQLITE3取得時には(ROWS)
 　　　　　　　　「抽出」と表示。
-　　　　　　　　ROWSを表示。
+　　　　　　　　?? ROWS
 　　　　　　ここまで。
 　　　　ここまで。
  　　ここまで。

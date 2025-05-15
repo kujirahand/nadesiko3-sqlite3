@@ -54,7 +54,7 @@ const PluginSQLite3 = {
       const db = sys.__sqlite3db
       db.run(sql, params, function (err) {
         if (err) throw new Error('SQLITE3実行時のエラー『' + sql + '』' + err.message)
-        sys.__v0['SQLITE3今挿入ID'] = this.lastID
+        sys.__setSysVar('SQLITE3今挿入ID', this.lastID)
         f()
       })
     }
@@ -96,7 +96,7 @@ const PluginSQLite3 = {
             return
           }
           if (this.lastID) {
-            sys.__v0['SQLITE3今挿入ID'] = this.lastID
+            sys.__setSysVar('SQLITE3今挿入ID', this.lastID)
           }
           // console.log(sql, params, err)
           resolve()

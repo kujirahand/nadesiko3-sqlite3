@@ -41,11 +41,9 @@ describe('sqlite3-test', () => {
   })
   // SQLite3のテスト ---
   const fname = path.join(__dirname, 'test_node_func.sqlite3')
-  it('SQLite3 - create', async () => {
+  it('SQLite3 - create and delete', async () => {
     const sqlCreate = 'CREATE TABLE IF NOT EXISTS tt (id INTEGER PRIMARY KEY, value INTEGER);'
     await cmd(`「${fname}」をSQLITE3開く。\n「${sqlCreate}」を[]でSQLITE3実行時には;1と1がASSERT等しい;ここまで;`)
-  })
-  it('SQLite3 - delete all', async () => {
     await cmd(`「${fname}」をSQLITE3開く。「DELETE FROM tt」を[]でSQLITE3実行時には;1と1がASSERT等しい;ここまで;`)
   })
   it('SQLite3 - insert', async () => {

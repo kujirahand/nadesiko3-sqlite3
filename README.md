@@ -6,3 +6,6 @@
 
 - [なでしこ3マニュアル > SQLite3](https://nadesi.com/v3/doc/index.php?nadesiko3-sqlite3%2FSQLite3&show)
 
+## SQLiteバックエンド
+
+SQLiteバックエンドには`better-sqlite3`を利用します。

@@ -1,13 +1,79 @@
 // plugin_sqlite3.js
-import sqlite3 from 'sqlite3'
+import BetterSqlite3 from 'better-sqlite3'
+
 const ERR_OPEN_DB = 'SQLITE3の命令を使う前に『SQLITE3開く』でデータベースを開いてください。';
+
+function toPlainRow (row) {
+  if (row === undefined || row === null) return row
+  return Object.fromEntries(Object.entries(row))
+}
+
+function runStatement (stmt, params, method) {
+  if (params === undefined || params === null) return stmt[method]()
+  if (Array.isArray(params)) return stmt[method](...params)
+  return stmt[method](params)
+}
+
+class BetterSQLiteDatabase {
+  constructor (filename) {
+    this._db = new BetterSqlite3(filename)
+  }
+
+  run (sql, params, callback) {
+    try {
+      const stmt = this._db.prepare(sql)
+      const result = runStatement(stmt, params, 'run')
+      const info = {
+        lastID: Number(result.lastInsertRowid),
+        changes: Number(result.changes)
+      }
+      if (callback) setImmediate(() => callback.call(info, null))
+      return info
+    } catch (err) {
+      if (callback) {
+        setImmediate(() => callback.call({}, err))
+        return
+      }
+      throw err
+    }
+  }
+
+  get (sql, params, callback) {
+    try {
+      const stmt = this._db.prepare(sql)
+      const row = toPlainRow(runStatement(stmt, params, 'get'))
+      setImmediate(() => callback(null, row))
+    } catch (err) {
+      setImmediate(() => callback(err))
+    }
+  }
+
+  all (sql, params, callback) {
+    try {
+      const stmt = this._db.prepare(sql)
+      const rows = runStatement(stmt, params, 'all').map(toPlainRow)
+      setImmediate(() => callback(null, rows))
+    } catch (err) {
+      setImmediate(() => callback(err))
+    }
+  }
+
+  close () {
+    this._db.close()
+  }
+}
+
+function openDatabase (filename) {
+  return new BetterSQLiteDatabase(filename)
+}
+
 const PluginSQLite3 = {
   'meta': {
     type: 'const',
     value: {
       pluginName: 'nadesiko3-sqlite3', // プラグインの名前
       description: 'Node.js向けSQLiteプラグイン', // プラグインの説明
-      pluginVersion: '3.6.6', // プラグインのバージョン
+      pluginVersion: '3.6.7', // プラグインのバージョン
       nakoRuntime: ['cnako'], // 対象ランタイム
       nakoVersion: '3.6.0' // 要求なでしこバージョン
     }
@@ -25,7 +91,7 @@ const PluginSQLite3 = {
     type: 'func',
     josi: [['を', 'の']],
     fn: function (s, sys) {
-      const db = new sqlite3.Database(s)
+      const db = openDatabase(s)
       sys.__sqlite3db = db
       return db
     }
@@ -154,4 +220,3 @@ const PluginSQLite3 = {
 export default PluginSQLite3
 
 // module.exports = PluginSQLite3
-

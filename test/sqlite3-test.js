@@ -35,6 +35,24 @@ describe('sqlite3-test', () => {
     }
     await nako.runAsync(code)
   }
+  const runPluginSql = async (fname) => {
+    const sys = {
+      __sqlite3db: null,
+      __setSysVar: () => {}
+    }
+    try {
+      PluginSQLite3['SQLITE3開'].fn(fname, sys)
+      await PluginSQLite3['SQLITE3実行'].fn('DROP TABLE IF EXISTS jp_test;', [], sys)
+      await PluginSQLite3['SQLITE3実行'].fn('CREATE TABLE jp_test(id, content);', [], sys)
+      await PluginSQLite3['SQLITE3実行'].fn('INSERT INTO jp_test (id,content) VALUES(?,?)', [1, '日本語テスト'], sys)
+      const rows = await PluginSQLite3['SQLITE3全取得'].fn('SELECT * FROM jp_test', [], sys)
+      assert.strictEqual(rows[0].content, '日本語テスト')
+    } finally {
+      if (sys.__sqlite3db) {
+        PluginSQLite3['SQLITE3閉'].fn(sys)
+      }
+    }
+  }
   // --- test ---
   it('表示', async () => {
     await cmp('3を表示', '3')
@@ -74,6 +92,10 @@ describe('sqlite3-test', () => {
   it('SQLite3 - select - SQLITE3全取得', async () => {
     const sql = 'SELECT value FROM tt WHERE id=?;'
     await cmd(`「${fname}」をSQLITE3開く。\n「${sql}」を[1]でSQLITE3全取得;それを表示。それ[0]['value']と1がASSERT等しい。`)
+  })
+  it('SQLite3 - Japanese text', async () => {
+    const fname = path.join(__dirname, 'test_japanese_better.sqlite3')
+    await runPluginSql(fname)
   })
   // --- ここまでSQLite3のテスト
 })

@@ -8,4 +8,4 @@
 
 ## SQLiteバックエンド
 
-SQLiteバックエンドには`better-sqlite3`を利用します。
+- SQLiteバックエンドには[better-sqlite3](https://www.npmjs.com/package/better-sqlite3)を利用します。

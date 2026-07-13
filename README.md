@@ -9,3 +9,11 @@
 ## SQLiteバックエンド
 
 - SQLiteバックエンドには[better-sqlite3](https://www.npmjs.com/package/better-sqlite3)を利用します。
+
+## 開発テスト
+
+```sh
+npm install
+npm test
+```
+

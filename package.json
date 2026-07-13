@@ -1,12 +1,12 @@
 {
   "name": "nadesiko3-sqlite3",
-  "version": "3.6.8",
+  "version": "3.6.9",
   "description": "SQLite3 Plug-in for Nadesiko3",
   "main": "nadesiko3-sqlite3.js",
   "scripts": {
     "clean:test-db": "node -e \"const fs=require('fs');const path=require('path');for(const f of fs.readdirSync('test')){if(f.endsWith('.sqlite3'))fs.rmSync(path.join('test',f),{force:true});}\"",
     "pretest": "npm run clean:test-db",
-    "test": "mocha",
+    "test": "node --test test/*.js",
     "posttest": "npm run clean:test-db"
   },
   "type": "module",
@@ -25,10 +25,9 @@
   },
   "homepage": "https://github.com/kujirahand/nadesiko3-sqlite3#readme",
   "dependencies": {
-    "better-sqlite3": "^12.9.0"
+    "better-sqlite3": "^12.11.1"
   },
   "devDependencies": {
-    "mocha": "^11.7.5"
   },
   "overrides": {
     "diff": "^8.0.3",
